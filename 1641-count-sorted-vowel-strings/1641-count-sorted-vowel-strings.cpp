@@ -1,14 +1,30 @@
 class Solution {
 public:
     int countVowelStrings(int n) {
-        vector<vector<int>> dp(n+1,vector<int>(5));
-        for(int i=0;i<5;i++) dp[1][i] = 1;
-        for(int i=2;i<=n;i++){
+        
+        // base case for n = 1, possible ways of string starting with 'a,e,i,o,u'
+        vector<int>track = {1,1,1,1,1};
+        
+        // intital track sum value 5
+        int count = 5;
+        
+        // loop from 2 to N to generate result
+        for(int i=2;i<=n;i++)
+        {
+            int tmp;
+            
+            // each char can have track[j to 5] sum of previous step in the current step 
             for(int j=0;j<5;j++)
-                for(int k=0;k<=j;k++) dp[i][j] += dp[i-1][k];
+            {
+                tmp = count;
+                count-=track[j];
+                track[j] = tmp;
+            }
+            
+            // update count for current step
+            count = accumulate(track.begin(),track.end(),0);
         }
-        int ans = 0;
-        for(int i=0;i<5;i++) ans += dp[n][i];
-        return ans;
+        
+        return count;
     }
 };
