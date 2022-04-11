@@ -8,45 +8,48 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
+class Solution
+{
 public:
-    ListNode* partition(ListNode* head, int x) {
-        ListNode *ansHead = NULL, *ansTail = NULL;
-        ListNode *ansHead1 = NULL, *ansTail1 = NULL;
+    ListNode *partition(ListNode *head, int x)
+    {
         ListNode *temp = head;
-        while(temp)
+        ListNode *sm;            
+        ListNode *gr;            
+        ListNode *thead1 = NULL; 
+        ListNode *thead2 = NULL; 
+        ListNode *next;          
+        while (temp != NULL)
         {
-            if(temp->val < x)
+            if (temp->val >= x)
             {
-                if(!ansHead)
+                if (thead2 == NULL)
                 {
-                    ansHead = new ListNode(temp->val);
-                    ansTail = ansHead;
+                    thead2 = temp;
+                    gr = temp;
                 }
                 else
-                {
-                    ansTail->next = new ListNode(temp->val);
-                    ansTail = ansTail->next;
-                }
+                    gr->next = temp, gr = gr->next;
             }
             else
             {
-                if(!ansHead1)
+                if (thead1 == NULL)
                 {
-                    ansHead1 = new ListNode(temp->val);
-                    ansTail1 = ansHead1;
+                    thead1 = temp;
+                    sm = temp;
                 }
                 else
-                {
-                    ansTail1->next = new ListNode(temp->val);
-                    ansTail1 = ansTail1->next;
-                }
+                    sm->next = temp, sm = sm->next;
             }
-            temp = temp->next;
+            next = temp->next;
+            temp->next = NULL;
+            temp = next;
         }
-        if(ansHead == NULL)
-            return head;
-        ansTail->next = ansHead1;
-        return ansHead;
+        if (thead1 == NULL)
+            return thead2; 
+        if (thead2 == NULL)
+            return thead1; 
+        sm->next = thead2; 
+        return thead1;     
     }
 };
