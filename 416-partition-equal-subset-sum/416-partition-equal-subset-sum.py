@@ -1,24 +1,32 @@
 class Solution:
-    def canPartition(self, nums: List[int]) -> bool:
-        def rec(idx, target):
-            if (idx, target) in memo:
+    def canPartition(self, nums):
+        def issubsetpossible(subsetsum,index):
+            if index >= len(nums) or subsetsum < 0:
                 return False
-            if target == 0:
+
+            if subsetsum == 0:
                 return True
-            elif target < 0 or idx == N:
-                return False
-            
-            flag = rec(idx + 1, target - nums[idx]) or rec(idx + 1, target)
-            if flag:
-                return True
-            memo.add((idx, target))
-            return False
-        
-        total_sum = sum(nums)
-        #edge case
-        if total_sum % 2 == 1:
-            return False
-        
-        memo = set()
-        N = len(nums)
-        return rec(0, total_sum // 2)
+
+            if cache[index][subsetsum] != None:
+                #print(cache)
+                return cache[index][subsetsum]        
+
+
+            res =  issubsetpossible(subsetsum-nums[index],index+1) or \
+                                issubsetpossible(subsetsum, index+1)
+
+            cache[index][subsetsum] = res
+
+            return res
+
+
+        if sum(nums)%2 != 0:
+            return False        
+
+        #if sum is even
+        subsetsum = sum(nums)//2    
+
+        #memoization
+        cache = [[None]*(subsetsum+1) for _ in range(len(nums))]
+
+        return issubsetpossible(subsetsum,0)
