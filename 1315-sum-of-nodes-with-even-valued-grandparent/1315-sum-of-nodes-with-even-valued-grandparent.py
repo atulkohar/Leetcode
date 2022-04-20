@@ -1,41 +1,29 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    
-    void helper(TreeNode* root, int &ans){
-        if(root == NULL)
-            return;
-        if(root->val%2 == 0)
-        {
-            if(root->left){
-                if(root->left->left)
-                    ans += root->left->left->val;
-                if(root->left->right)
-                    ans += root->left->right->val;}
-            if(root->right){
-                if(root->right->left)
-                    ans += root->right->left->val;
-                if(root->right->right)
-                    ans += root->right->right->val;
-            }
-        }
-        helper(root->left,ans);
-        helper(root->right,ans);
-    }
-    
-    int sumEvenGrandparent(TreeNode* root) {
-        int ans = 0;
-        helper(root,ans);
-        return ans;
-    }
-};
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sumEvenGrandparent(self, root: TreeNode) -> int:
+        ret = 0
+        
+        def dfs(gp, p, r):
+            nonlocal ret
+            
+            if not r:
+                return 
+            if gp:
+                ret += r.val
+            
+            if not r.val % 2:
+                dfs(p, True, r.left)
+                dfs(p, True, r.right)
+            else:
+                dfs(p, False, r.left)
+                dfs(p, False, r.right)
+        
+        dfs(False, False, root)
+        
+        return ret
+        
