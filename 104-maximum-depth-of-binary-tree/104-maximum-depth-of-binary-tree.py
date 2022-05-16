@@ -6,10 +6,18 @@
 #         self.right = right
 class Solution:
     def maxDepth(self, root) -> int:
-        return self.dfs2(root)
-    def dfs2(self,root):
-        if not(root):
+        if not root:
             return 0
-        left = self.dfs2(root.left)
-        right = self.dfs2(root.right)
-        return max(left,right)+1
+        
+        stack = [[root, 1]]
+        res = 1
+        
+        while stack:
+            node, depth = stack.pop()
+            if node:
+                res = max(res, depth)
+                stack.append([node.left, depth + 1])
+                stack.append([node.right, depth + 1])
+        
+        return res
+        
