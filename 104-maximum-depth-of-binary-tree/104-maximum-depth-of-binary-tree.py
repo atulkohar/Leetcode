@@ -6,11 +6,8 @@
 #         self.right = right
 class Solution:
     def maxDepth(self, root) -> int:
-        if not root:
-            return 0
-        
         stack = [[root, 1]]
-        res = 1
+        res = 0
         
         while stack:
             node, depth = stack.pop()
