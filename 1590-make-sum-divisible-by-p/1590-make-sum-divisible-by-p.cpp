@@ -1,28 +1,24 @@
 class Solution {
 public:
     int minSubarray(vector<int>& nums, int p) {
-        int ans = nums.size();
-        int remove_sum = 0;
-        for(int i=0;i<nums.size();i++)
+        
+        int target =0 ;
+        for(int & i: nums) target= (target+i)%p;
+        if(!target) return 0 ;
+        
+        unordered_map<int,int>  umap ;
+        int curr_sum = 0 ,len = nums.size() ;
+        
+        umap[0] =  -1 ; 
+        
+       for(int i=0 ;i<nums.size() ;i++)
         {
-            remove_sum = (remove_sum+nums[i])%p;
+            curr_sum= (curr_sum+nums[i])%p;
+            int prev_sum =(p+curr_sum-target)%p ;
+            if(umap.find(prev_sum)!= umap.end()) len = min(len , i-umap[prev_sum]) ;
+            umap[curr_sum] = i ;
         }
-        if(remove_sum==0) return 0;
-        unordered_map<int,int>m;
-        m[0] = -1;
-        int curr = 0;
-        for(int i=0;i<nums.size();i++)
-        {
-            curr = (curr+nums[i])%p;
-            m[curr] = i;
- // extra remainder jisko hatane pr sum divisible ho jayega p se
-// p yaha add kiye hain to handle the case when remove_sum>curr
-            int rem = (curr-remove_sum+p)%p;
-            if(m.find(rem)!=m.end())
-            {
-                ans = min(ans,i-m[rem]);
-            }   
-        }
-    return ans>=nums.size() ? -1:ans;
+        
+        return len >= nums.size()?-1:len ;
     }
 };
