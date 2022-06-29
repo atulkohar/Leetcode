@@ -15,6 +15,9 @@ public:
         int n = people.size();
         
         sort(people.begin(), people.end(), compare); //Sorting the array according to comp function.
+        // for(int i=0; i<people.size(); i++){
+        //     cout<<people[i][0]<<" "<<people[i][1]<<endl;
+        // }
         vector<vector<int>> res; //To store the final array to be returned
         
         for(int i = 0; i < n; i++)
