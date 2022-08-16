@@ -1,20 +1,27 @@
 class Solution {
 public:
-    int firstMissingPositive(vector<int>& nums) {
-        int n=nums.size();
-        for(int i=0;i<n;i++) 
-            if(nums[i]<=0) 
-                nums[i]=n+1;
-        for(int i=0;i<n;i++){
-            int p=abs(nums[i]);
-            if(p<=n&&nums[p-1]>0) 
-                nums[p-1]*=-1; 
+    
+    // Cyclic sort 
+    // Arr :      [1,2,3,4,5,6] 
+    // indices :  [0,1,2,3,4,5]   arr[i] == i+1               
+    int firstMissingPositive(vector<int>&nums) 
+    {
+        int i = 0;
+        int n = nums.size();
+        while(i < n)
+        {
+            if(nums[i] > 0 and nums[i] <= n && nums[i] != nums[nums[i] - 1]){
+                swap(nums[i], nums[nums[i]-1]);
+            }
+            else
+                i++;
         }
-        for(int i=0; i<n; i++)
-            cout<<nums[i]<<" ";
-        int i=0;
-        while(i<n&&nums[i]<0) 
-            i++;
-        return i+1;
+        
+        for(i=0;i<n;i++){
+            if(nums[i] != i + 1){
+                return (i + 1); // missing positive number 
+            }
+        }
+        return n + 1; // [1,2,3] , ans  = 4 (missing positive integers)
     }
 };
