@@ -1,21 +1,35 @@
 class Solution {
 public:
-    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
-        vector<int> vec;
-        unordered_set<int> mp;
-        for(int i=0;i<nums1.size();i++)
-            {
-            mp.insert(nums1[i]);
-            }
-        for(int i=0;i<nums2.size();i++)
-        {
-            int key=nums2[i];
-            if(mp.find(key)!=mp.end())
-            {
-                vec.push_back(key);
-                mp.erase(key);
+vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+int i=0,j=0;
+sort(nums1.begin(),nums1.end());
+sort(nums2.begin(),nums2.end());
+vector<int> ans;
+while(i<nums1.size() && j<nums2.size()){
+if(nums1[i]==nums2[j]){
+if(ans.size()==0){
+ans.push_back(nums1[i]);
+i++; j++;
+}
+else{
+if(ans[ans.size()-1]==nums1[i]){
+i++;
+j++;
+}
+else{
+ans.push_back(nums1[i]);
+i++; j++;
+}
+
             }
         }
-        return vec;
+        
+        else if(nums1[i]>nums2[j]){
+            j++;
+        }
+        else i++;
+            
     }
+    return ans;
+}
 };
